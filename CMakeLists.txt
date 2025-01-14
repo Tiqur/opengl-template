@@ -17,8 +17,36 @@ set(SOURCES
     src/main.cpp
 )
 
+# Find OpenGL
+find_package(OpenGL REQUIRED)
+
+# Find GLEW
+find_package(GLEW REQUIRED)
+
+# Find GLFW
+find_package(glfw3 REQUIRED)
+
+# Find PkgConfig
+find_package(PkgConfig REQUIRED)
+
+# Include directories for OpenGL, GLEW, GLFW, and ImGui
+include_directories(
+    ${OPENGL_INCLUDE_DIRS}
+    ${GLEW_INCLUDE_DIRS}
+    ${GLFW_INCLUDE_DIRS}
+    ${IMGUI_INCLUDE_DIRS}
+)
+
 # Create the executable
 add_executable(OpenGLProject ${SOURCES})
+
+# Link the necessary libraries
+target_link_libraries(OpenGLProject
+    ${OPENGL_LIBRARIES}
+    ${GLEW_LIBRARIES}
+    glfw
+    imgui
+)
 
 # Enable Clang-Tidy for static analysis
 set(CMAKE_CXX_CLANG_TIDY "clang-tidy;-checks=*")
