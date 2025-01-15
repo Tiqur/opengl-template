@@ -34,7 +34,6 @@ include_directories(
     ${OPENGL_INCLUDE_DIRS}
     ${GLEW_INCLUDE_DIRS}
     ${GLFW_INCLUDE_DIRS}
-    ${IMGUI_INCLUDE_DIRS}
 )
 
 # Create the executable
@@ -45,7 +44,6 @@ target_link_libraries(OpenGLProject
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARIES}
     glfw
-    imgui
 )
 
 # Enable Clang-Tidy for static analysis

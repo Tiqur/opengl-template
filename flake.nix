@@ -18,7 +18,6 @@
         # Dependencies
         glew
         glfw3
-        imgui
       ];
     };
   };
