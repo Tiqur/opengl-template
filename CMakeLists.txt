@@ -16,10 +16,11 @@ set(CMAKE_CXX_COMPILER clang++)
 set(CMAKE_BUILD_TYPE Debug)
 
 # Fetch ImGui
+# Using ImGui v1.91.7 for stability. Update tag for newer features.
 FetchContent_Declare(
   ImGui
   GIT_REPOSITORY https://github.com/ocornut/imgui
-  GIT_TAG master
+  GIT_TAG v1.91.7
 )
 FetchContent_MakeAvailable(ImGui)
 
