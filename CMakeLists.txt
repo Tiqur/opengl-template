@@ -1,9 +1,12 @@
-cmake_minimum_required(VERSION 3.10)
+cmake_minimum_required(VERSION 3.14 FATAL_ERROR)
 
 # Set the project name and specify the C++ standard
 project(OpenGLProject)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Include Libraries
+include(FetchContent)
 
 # Set compilers (Clang)
 set(CMAKE_C_COMPILER clang)
@@ -11,6 +14,50 @@ set(CMAKE_CXX_COMPILER clang++)
 
 # Set build type
 set(CMAKE_BUILD_TYPE Debug)
+
+# Fetch ImGui
+FetchContent_Declare(
+  ImGui
+  GIT_REPOSITORY https://github.com/ocornut/imgui
+  GIT_TAG master
+)
+FetchContent_MakeAvailable(ImGui)
+
+# Define the ImGui library
+add_library(ImGui STATIC
+    # Core files
+    ${imgui_SOURCE_DIR}/imconfig.h
+    ${imgui_SOURCE_DIR}/imgui.h
+    ${imgui_SOURCE_DIR}/imgui.cpp
+    ${imgui_SOURCE_DIR}/imgui_demo.cpp
+    ${imgui_SOURCE_DIR}/imgui_draw.cpp
+    ${imgui_SOURCE_DIR}/imgui_internal.h
+    ${imgui_SOURCE_DIR}/imgui_tables.cpp
+    ${imgui_SOURCE_DIR}/imgui_widgets.cpp
+
+    # Backends
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_glfw.h
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.cpp
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3.h
+    ${imgui_SOURCE_DIR}/backends/imgui_impl_opengl3_loader.h
+
+    # stb libraries
+    ${imgui_SOURCE_DIR}/imstb_rectpack.h
+    ${imgui_SOURCE_DIR}/imstb_textedit.h
+    ${imgui_SOURCE_DIR}/imstb_truetype.h
+
+    # For using std::string
+    ${imgui_SOURCE_DIR}/misc/cpp/imgui_stdlib.cpp
+    ${imgui_SOURCE_DIR}/misc/cpp/imgui_stdlib.h
+)
+
+# Set the include directories for ImGui
+target_include_directories(ImGui PUBLIC 
+    ${imgui_SOURCE_DIR}
+    ${imgui_SOURCE_DIR}/backends
+    ${imgui_SOURCE_DIR}/misc/cpp
+)
 
 # Set source files
 set(SOURCES
@@ -25,9 +72,6 @@ find_package(GLEW REQUIRED)
 
 # Find GLFW
 find_package(glfw3 REQUIRED)
-
-# Find PkgConfig
-find_package(PkgConfig REQUIRED)
 
 # Include directories for OpenGL, GLEW, GLFW, and ImGui
 include_directories(
@@ -44,6 +88,7 @@ target_link_libraries(OpenGLProject
     ${OPENGL_LIBRARIES}
     ${GLEW_LIBRARIES}
     glfw
+    ImGui
 )
 
 # Enable Clang-Tidy for static analysis
